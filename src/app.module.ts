@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { UserService } from './user/user.service';
 import { UserController } from './user/user.controller';
+import { QuizresultModule } from './quizresult/quizresult.module';
 
 @Module({
   imports: [
@@ -16,8 +17,9 @@ import { UserController } from './user/user.controller';
     AuthModule,
     PrismaModule,
     UserModule,
+    QuizresultModule,
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
