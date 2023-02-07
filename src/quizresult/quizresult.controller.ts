@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { QuizResultDto } from './dto/quizresult.dto';
@@ -20,7 +20,8 @@ export class QuizresultController {
   }
 
   @Get('best-score')
-  getAllBestScore() {
+  getAllBestScore(@Req() req) {
+    console.log(req.headers.authorization);
     return this.quizResultService.getAllBestScore();
   }
 

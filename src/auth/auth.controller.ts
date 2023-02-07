@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 
@@ -12,7 +12,14 @@ export class AuthController {
   }
 
   @Post('signin')
-  loginUser(@Body() dto: AuthDto) {
-    return this.authService.loginUser(dto);
+  loginUser(@Body() dto: AuthDto, @Res() res) {
+    // Set the "http only" cookie after successful login
+
+    // res.status(HttpStatus.OK).send({
+    //   message: 'success login',
+    // });
+    // console.log(this.authService.loginUser(dto));
+    return this.authService.loginUser(dto, res);
+    // Return success status
   }
 }

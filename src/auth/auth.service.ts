@@ -26,7 +26,11 @@ export class AuthService {
       //to remove hash coz we don want it to send back to the client
       delete user.hash;
 
-      return this.signToken(user.id, user.email);
+      if (this.signToken(user.id, user.email)) {
+        return {
+          message: 'Success Register Please Login',
+        };
+      }
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -37,7 +41,7 @@ export class AuthService {
     }
   }
 
-  async loginUser(dto: AuthDto) {
+  async loginUser(dto: AuthDto, res) {
     try {
       const user = await this.prisma.user.findUnique({
         where: {
@@ -55,6 +59,13 @@ export class AuthService {
         throw new ForbiddenException('Incorect Password');
       }
 
+      const token = await this.signToken(user.id, user.email);
+
+      res.cookie('token', token, { httpOnly: true });
+
+      return res.send({
+        message: 'Success Login',
+      });
       return this.signToken(user.id, user.email);
     } catch (error) {
       throw error;
@@ -73,6 +84,6 @@ export class AuthService {
       secret,
     });
 
-    return { access_token: signToken };
+    return signToken;
   }
 }
